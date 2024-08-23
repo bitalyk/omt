@@ -17,12 +17,15 @@
                     console.log('Server response:', data);
                     // Display the server response on the page
                     document.getElementById('response').innerText = data;
+                    
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
         }
-
+                const tokenResponse = await fetch(`/get-token?query=${encodeURIComponent(data)}`);
+                const tokenData = await tokenResponse.text();
+                console.log('Token response:', tokenData);
         // Run the function when the page loads
         window.onload = extractFragment;
     </script>
