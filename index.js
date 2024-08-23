@@ -25,6 +25,10 @@ app.get("/get-token-fixed", (req, res) => {
 
 app.get('/get-query/', getQuery);
 
+app.get('/query', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'query.html'));
+});
+
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
   });

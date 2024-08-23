@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fragment Example</title>
+    <script>
+        function extractFragment() {
+            // Get the fragment part of the URL
+            const fragment = window.location.hash.substring(1); // Remove the '#'
+            console.log('Fragment:', fragment);
+
+            // Optionally send this fragment to the server via an AJAX request
+            fetch(`/get-query?query=${encodeURIComponent(fragment)}`)
+                .then(response => response.text())
+                .then(data => {
+                    console.log('Server response:', data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // Run the function when the page loads
+        window.onload = extractFragment;
+    </script>
+</head>
+<body>
+    <h1>Fragment Example</h1>
+</body>
+</html>
