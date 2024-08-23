@@ -11,7 +11,7 @@ app.get("/", (req, res) => {
   });
 
 app.get("/get-token", (req, res) => {
-    getToken(res);
+    getToken(req,res);
   });
 
 app.get("/get", (req, res) => {
