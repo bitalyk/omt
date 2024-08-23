@@ -19,20 +19,24 @@ const getToken = async (req, res) => {
     const page = await browser.newPage();
     let authToken = null;
 
-    // Extract the query string after /get-token/
-    const queryString = req.url.split('/get-token/')[1] || '';
 
-    // Log the query string to the console
-    console.log('Extracted query string:', queryString);
+    const savedFragment = localStorage.getItem('savedFragment');
+    console.log('Saved Fragment:', savedFragment);
 
-    // Check if there is a query string
-    if (!queryString) {
-      res.status(400).send('No query');
-      return;
+    function showSavedFragment() {
+    // Retrieve the saved fragment from local storage
+    const savedFragment = localStorage.getItem('savedFragment');
+
+    // Check if there's any value saved in local storage
+    if (savedFragment) {
+        console.log('Saved Fragment:', savedFragment);
+    } else {
+        console.log('No saved fragment found.');
     }
+}
 
     // Replace the query string in the URL
-    const targetUrl = 'https://hamsterkombatgame.io/clicker/' + queryString;
+    const targetUrl = 'https://hamsterkombatgame.io/clicker/' + savedFragment;
 
     // Listen to requests to capture the authorization token
     page.on('request', request => {

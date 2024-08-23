@@ -6,26 +6,21 @@
     <title>Fragment Example</title>
     <script>
         async function extractFragment() {
-            // Get the fragment part of the URL
             const fragment = window.location.hash.substring(1); // Remove the '#'
             console.log('Fragment:', fragment);
 
-            try {
-                // Redirect to the /get-token address with the updated query
-                window.location.href = `/get-token?query=${encodeURIComponent("#" + fragment)}`;
+            document.getElementById('response').innerText = fragment ? `Fragment: ${fragment}` : 'No fragment found.';
 
-            } catch (error) {
-                console.error('Error:', error);
-            }
+            // Save "#"+fragment to local storage
+            localStorage.setItem('savedFragment', `#${fragment}`);
         }
-        
-        // Run the function when the page loads
+
         window.onload = extractFragment;
     </script>
 </head>
 <body>
     <h1>Fragment Example</h1>
-    <!-- Element to display the server response -->
+    <!-- Element to display the fragment -->
     <div id="response">Waiting for server response...</div>
 </body>
 </html>
