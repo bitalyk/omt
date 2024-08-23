@@ -25,12 +25,15 @@ const getQuery = async (req, res) => {
     });
 
     const page = await browser.newPage();
-    await page.goto(`https://example.com?query=${encodeURIComponent(query)}`); // Use the query parameter in the URL
 
-    // Perform any additional operations with Puppeteer here
+    // Your Puppeteer code here, for example:
+    // await page.goto(`https://example.com?query=${encodeURIComponent(query)}`);
+    // const content = await page.content();
+    // await page.close();
 
     await browser.close();
-    res.send('Puppeteer script completed successfully: ${encodeURIComponent(query)');
+
+    res.send(`Puppeteer script completed successfully with query: ${query}`);
   } catch (error) {
     console.error('Error running Puppeteer script:', error);
     res.status(500).send('Error running Puppeteer script');
