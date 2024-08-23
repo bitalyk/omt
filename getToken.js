@@ -15,13 +15,9 @@ const getToken = async (req,res) => {
           ? process.env.PUPPETEER_EXECUTABLE_PATH
           : puppeteer.executablePath(),
     });
-    const fragment = window.location.hash.substring(1);
     const page = await browser.newPage();
     let authToken = null;
     
-    // Replace the query string in the URL
-    const targetUrl = 'https://hamsterkombatgame.io/clicker/#' + fragment;
-
     // Listen to requests to capture the authorization token
     page.on('request', request => {
       const url = request.url();
@@ -33,8 +29,8 @@ const getToken = async (req,res) => {
       }
     });
 
-    // Navigate to the dynamically constructed URL
-    await page.goto(targetUrl);
+    // Navigate to the specified URL
+    await page.goto('https://api.hamsterkombatgame.io/clicker/#'+window.location.hash);
 
     // Wait for the specific request
     await page.waitForRequest(request => request.url() === 'https://api.hamsterkombatgame.io/clicker/sync');
@@ -43,7 +39,7 @@ const getToken = async (req,res) => {
     await browser.close();
 
     // Send the captured token or a message indicating no token was found
-    console.log({ token: authToken || 'No token found' });
+    res.json({ token: authToken || 'No token found' });
   } catch (error) {
     console.error('Error running Puppeteer script:', error);
   }
