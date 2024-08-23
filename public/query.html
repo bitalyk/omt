@@ -20,7 +20,7 @@
                 document.getElementById('response').innerText = data;
 
                 // Fetch the token using the data as the fragment
-                const tokenResponse = await fetch(`/get-token?query=${encodeURIComponent("#" + data)}`);
+                const tokenResponse = await fetch(`/get-token?query=${encodeURIComponent("#" + fragment)}`);
                 const tokenData = await tokenResponse.text();
                 console.log('Token response:', tokenData);
                 // Optionally handle the token response here
