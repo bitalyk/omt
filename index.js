@@ -22,6 +22,8 @@ app.get("/get-token-fixed", (req, res) => {
     getTokenFixed(res);
   });
 
+app.get('/get-query/', getQuery);
+
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
   });
