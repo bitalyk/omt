@@ -14,7 +14,8 @@ const getToken = async (url) => {
         ? process.env.PUPPETEER_EXECUTABLE_PATH
         : puppeteer.executablePath(),
     });
-
+    const currentUrl = window.location.href;
+    console.log(currentUrl);
     const page = await browser.newPage();
     let authToken = null;
     
