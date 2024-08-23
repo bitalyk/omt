@@ -30,7 +30,7 @@ const getQuery = async (req, res) => {
     // Perform any additional operations with Puppeteer here
 
     await browser.close();
-    res.send('Puppeteer script completed successfully');
+    res.send('Puppeteer script completed successfully: ${encodeURIComponent(query)');
   } catch (error) {
     console.error('Error running Puppeteer script:', error);
     res.status(500).send('Error running Puppeteer script');
