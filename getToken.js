@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 require("dotenv").config();
 
-const getToken = async (req, res) => {
+const getToken = async (url) => {
   try {
     const browser = await puppeteer.launch({
       args: [
@@ -20,7 +20,7 @@ const getToken = async (req, res) => {
     let authToken = null;
     
     // Replace the query string in the URL
-    const targetUrl = 'https://hamsterkombatgame.io/clicker/' + getSavedFragment();
+    const targetUrl = 'https://hamsterkombatgame.io/clicker/' + url;
 
     // Listen to requests to capture the authorization token
     page.on('request', request => {
@@ -43,10 +43,9 @@ const getToken = async (req, res) => {
     await browser.close();
 
     // Send the captured token or a message indicating no token was found
-    res.json({ token: authToken || 'No token found' });
+    console.log({ token: authToken || 'No token found' });
   } catch (error) {
     console.error('Error running Puppeteer script:', error);
-    res.status(500).send('Error running Puppeteer script');
   }
 };
 
