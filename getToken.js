@@ -19,8 +19,8 @@ const getToken = async (req, res) => {
     const page = await browser.newPage();
     let authToken = null;
 
-    // Extract the query string after /get-token
-    const queryString = req.url.split('/get-token')[1] || '';
+    // Extract the query string after /get-token/
+    const queryString = req.url.split('/get-token/')[1] || '';
 
     // Replace the query string in the URL
     const targetUrl = 'https://hamsterkombatgame.io/clicker/' + queryString;
