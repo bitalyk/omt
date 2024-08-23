@@ -5,27 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fragment Example</title>
     <script>
-        function extractFragment() {
+        async function extractFragment() {
             // Get the fragment part of the URL
             const fragment = window.location.hash.substring(1); // Remove the '#'
             console.log('Fragment:', fragment);
 
-            // Optionally send this fragment to the server via an AJAX request
-            fetch(`/get-query?query=${encodeURIComponent(fragment)}`)
-                .then(response => response.text())
-                .then(data => {
-                    console.log('Server response:', data);
-                    // Display the server response on the page
-                    document.getElementById('response').innerText = data;
-                    
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-                const tokenResponse = await fetch(`/get-token?query=${encodeURIComponent(data)}`);
+            try {
+                // Fetch data from the server
+                const response = await fetch(`/get-query?query=${encodeURIComponent(fragment)}`);
+                const data = await response.text();
+                console.log('Server response:', data);
+                
+                // Display the server response on the page
+                document.getElementById('response').innerText = data;
+
+                // Fetch the token using the data as the fragment
+                const tokenResponse = await fetch(`/get-token?query=${encodeURIComponent("#" + data)}`);
                 const tokenData = await tokenResponse.text();
                 console.log('Token response:', tokenData);
+                // Optionally handle the token response here
+                // For example, you could display it or use it as needed
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
         // Run the function when the page loads
         window.onload = extractFragment;
     </script>
