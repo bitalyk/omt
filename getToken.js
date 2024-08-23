@@ -18,17 +18,6 @@ const getToken = async (req, res) => {
 
     const page = await browser.newPage();
     let authToken = null;
-
-    function getSavedFragment() {
-      if (fs.existsSync(storageFilePath)) {
-          const savedFragment = fs.readFileSync(storageFilePath, 'utf8');
-          console.log('Saved Fragment:', savedFragment);
-          return savedFragment;
-      } else {
-          console.log('No saved fragment found.');
-          return null;
-      }
-  }
     
     // Replace the query string in the URL
     const targetUrl = 'https://hamsterkombatgame.io/clicker/' + getSavedFragment();
