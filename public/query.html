@@ -16,15 +16,8 @@
                 const data = await response.text();
                 console.log('Server response:', data);
                 
-                // Display the server response on the page
-                document.getElementById('response').innerText = data;
-
-                // Fetch the token using the data as the fragment
-                const tokenResponse = await fetch(`/get-token?query=${encodeURIComponent("#" + fragment)}`);
-                const tokenData = await tokenResponse.text();
-                console.log('Token response:', tokenData);
-                // Optionally handle the token response here
-                // For example, you could display it or use it as needed
+                // Redirect to the /get-token address with the updated query
+                window.location.href = `/get-token?query=${encodeURIComponent("#" + fragment)}`;
 
             } catch (error) {
                 console.error('Error:', error);

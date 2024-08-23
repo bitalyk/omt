@@ -1,36 +1,38 @@
 const puppeteer = require('puppeteer');
-require('dotenv').config();
-const querystring = require('querystring');
+require("dotenv").config();
 
 const getToken = async (req, res) => {
   try {
-    // Extract the query string from the request URL
-    const query = req.query.query;
-    
-    // Decode the query string
-    const decodedQuery = decodeURIComponent(query);
-    
-    // Log the decoded query for debugging
-    console.log('Decoded Query:', decodedQuery);
-
-    // Launch Puppeteer
     const browser = await puppeteer.launch({
       args: [
-        '--disable-setuid-sandbox',
-        '--no-sandbox',
-        '--single-process',
-        '--no-zygote',
+        "--disable-setuid-sandbox",
+        "--no-sandbox",
+        "--single-process",
+        "--no-zygote",
       ],
-      executablePath: process.env.NODE_ENV === 'production'
-        ? process.env.PUPPETEER_EXECUTABLE_PATH
-        : puppeteer.executablePath(),
+      executablePath:
+        process.env.NODE_ENV === "production"
+          ? process.env.PUPPETEER_EXECUTABLE_PATH
+          : puppeteer.executablePath(),
     });
 
     const page = await browser.newPage();
     let authToken = null;
 
-    // Construct the target URL with the decoded query string
-    const targetUrl = 'https://hamsterkombatgame.io/clicker/' + decodedQuery;
+    // Extract the query string after /get-token/
+    const queryString = req.url.split('/get-token/')[1] || '';
+
+    // Log the query string to the console
+    console.log('Extracted query string:', queryString);
+
+    // Check if there is a query string
+    if (!queryString) {
+      res.status(400).send('No query');
+      return;
+    }
+
+    // Replace the query string in the URL
+    const targetUrl = 'https://hamsterkombatgame.io/clicker/' + queryString;
 
     // Listen to requests to capture the authorization token
     page.on('request', request => {
@@ -48,15 +50,12 @@ const getToken = async (req, res) => {
 
     // Wait for the specific request
     await page.waitForRequest(request => request.url() === 'https://api.hamsterkombatgame.io/clicker/sync');
-
+    
     // Close the browser
     await browser.close();
 
-    // Send the decoded query and token in the response
-    res.json({
-      decodedQuery: decodedQuery,
-      token: authToken || 'No token found'
-    });
+    // Send the captured token or a message indicating no token was found
+    res.json({ token: authToken || 'No token found' });
   } catch (error) {
     console.error('Error running Puppeteer script:', error);
     res.status(500).send('Error running Puppeteer script');

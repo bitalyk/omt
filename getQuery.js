@@ -8,11 +8,8 @@ const getQuery = async (req, res) => {
       return res.status(400).send('Missing query parameter');
     }
 
-    // Decode the query parameter if needed
-    const decodedQuery = decodeURIComponent(query);
-
     // Log the query parameter to the console
-    console.log('Received query:', decodedQuery);
+    console.log('Received query:', query);
 
     const browser = await puppeteer.launch({
       args: [
@@ -29,14 +26,14 @@ const getQuery = async (req, res) => {
 
     const page = await browser.newPage();
 
-    // Example usage with the decoded query
-    // await page.goto(`https://example.com?query=${encodeURIComponent(decodedQuery)}`);
+    // Your Puppeteer code here, for example:
+    // await page.goto(`https://example.com?query=${encodeURIComponent(query)}`);
     // const content = await page.content();
     // await page.close();
 
     await browser.close();
 
-    res.send(`Puppeteer script completed successfully with query: ${decodedQuery}`);
+    res.send(`Puppeteer script completed successfully with query: ${query}`);
   } catch (error) {
     console.error('Error running Puppeteer script:', error);
     res.status(500).send('Error running Puppeteer script');
