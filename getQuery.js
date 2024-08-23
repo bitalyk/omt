@@ -36,3 +36,5 @@ const getQuery = async (req, res) => {
     res.status(500).send('Error running Puppeteer script');
   }
 };
+
+module.exports = { getQuery };
