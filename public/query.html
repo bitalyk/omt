@@ -11,6 +11,15 @@
 
             document.getElementById('response').innerText = fragment ? `Fragment: ${fragment}` : 'No fragment found.';
 
+            // Define the path to the file where the fragment will be stored
+            const storageFilePath = path.join(__dirname, 'savedFragment.txt');
+
+            // Function to save the fragment to a file
+            function saveFragment(fragment) {
+              fs.writeFileSync(storageFilePath, `#${fragment}`, 'utf8');
+               console.log(`Fragment saved: #${fragment}`);
+            }
+
             // Save "#"+fragment to local storage
             localStorage.setItem('savedFragment', `#${fragment}`);
         }

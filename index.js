@@ -1,5 +1,6 @@
 const express = require("express");
-const path = require('path')
+const path = require('path');
+const fs = require('fs');
 
 const { getToken } = require("./getToken.js");
 const { getQuery } = require("./getQuery.js");
