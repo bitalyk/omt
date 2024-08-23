@@ -15,6 +15,8 @@
                 .then(response => response.text())
                 .then(data => {
                     console.log('Server response:', data);
+                    // Display the server response on the page
+                    document.getElementById('response').innerText = data;
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -27,5 +29,7 @@
 </head>
 <body>
     <h1>Fragment Example</h1>
+    <!-- Element to display the server response -->
+    <div id="response">Waiting for server response...</div>
 </body>
 </html>
