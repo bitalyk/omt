@@ -19,13 +19,17 @@ const getToken = async (req, res) => {
     const page = await browser.newPage();
     let authToken = null;
 
+    // Extract the query string after /get-token/
+    const queryString = req.url.split('/get-token/')[1] || '';
+
+    // Log the query string to the console
+    console.log('Extracted query string:', queryString);
+
     // Check if there is a query string
-    if (!req.url.includes('/get-token/') || req.url.split('/get-token/')[1] === '') {
+    if (!queryString) {
       res.status(400).send('No query');
       return;
     }
-
-    const queryString = req.url.split('/get-token/')[1];
 
     // Replace the query string in the URL
     const targetUrl = 'https://hamsterkombatgame.io/clicker/' + queryString;
