@@ -1,5 +1,6 @@
 const express = require("express");
 const { getToken } = require("./getToken.js");
+const { getQuery } = require("./getQuery.js");
 const { getTokenFixed } = require("./getTokenFixed.js");
 const { getScreen } = require("./getScreen.js");
 const app = express();
