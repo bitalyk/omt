@@ -1,0 +1,1 @@
+docker pull ghcr.io/puppeteer/puppeteer:23.1.1
