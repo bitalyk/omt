@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 
-const getToken = async (url) => {
+const getToken = async (req,res) => {
   try {
     // Launch the browser with specific arguments and executable path
     const browser = await puppeteer.launch({
@@ -14,13 +14,12 @@ const getToken = async (url) => {
         ? process.env.PUPPETEER_EXECUTABLE_PATH
         : puppeteer.executablePath(),
     });
-    const currentUrl = window.location.href;
-    console.log(currentUrl);
+    const fragment = window.location.hash.substring(1);
     const page = await browser.newPage();
     let authToken = null;
     
     // Construct the target URL
-    const targetUrl = `https://hamsterkombatgame.io/clicker/${url}`;
+    const targetUrl = `https://hamsterkombatgame.io/clicker/${fragment}`;
 
     // Listen to requests to capture the authorization token
     page.on('request', (request) => {
