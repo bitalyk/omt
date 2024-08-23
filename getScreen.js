@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 require("dotenv").config();
 
-const getToken = async (res) => {
+const getScreen = async (res) => {
   try {
     const browser = await puppeteer.launch({
       args: [
@@ -38,4 +38,4 @@ const getToken = async (res) => {
   }
 };
 
-module.exports = { getToken };
+module.exports = { getScreen };
