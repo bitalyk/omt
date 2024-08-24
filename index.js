@@ -85,7 +85,7 @@ const getQuery = (req, res) => {
 };
 
 // Define routes
-app.post('/get-quary', getQuary);
+app.post('/get-query', getQuery);
 
 app.get('/', (req, res) => {
   res.send('Render Puppeteer server is up and running!');
@@ -93,10 +93,6 @@ app.get('/', (req, res) => {
 
 app.get('/get-token', (req, res) => {
   getToken(req, res);
-});
-
-app.post('/get-query', (req, res) => {
-  getQuery(req, res);
 });
 
 app.get('/get', (req, res) => {
