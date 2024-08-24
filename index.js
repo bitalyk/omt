@@ -18,19 +18,16 @@ let tempHash = '';
 // Integrated getToken function with hash parameter
 const getToken = async (req, res) => {
   try {
-    if (!tempHash) {
-      console.error('Hash is missing');
-      return res.status(400).json({ error: 'Hash is missing' });
+    const hash = tempHash; // Use the stored hash
+
+    if (!hash) {
+      return res.status(400).send('Hash is missing');
     }
 
-    console.log('Launching Puppeteer...');
+    console.log(`Using hash: ${hash}`);
+
     const browser = await puppeteer.launch({
-      args: [
-        "--disable-setuid-sandbox",
-        "--no-sandbox",
-        "--single-process",
-        "--no-zygote",
-      ],
+      args: ["--disable-setuid-sandbox", "--no-sandbox", "--single-process", "--no-zygote"],
       executablePath: process.env.NODE_ENV === "production"
         ? process.env.PUPPETEER_EXECUTABLE_PATH
         : puppeteer.executablePath(),
@@ -39,17 +36,20 @@ const getToken = async (req, res) => {
     const page = await browser.newPage();
     let authToken = null;
 
-    console.log('Listening for requests...');
     page.on('request', request => {
-      if (request.url() === 'https://api.hamsterkombatgame.io/clicker/sync') {
+      const url = request.url();
+      if (url === 'https://api.hamsterkombatgame.io/clicker/sync') {
         const headers = request.headers();
-        authToken = headers['authorization'] || null;
-        console.log('Authorization token captured:', authToken);
+        if (headers['authorization']) {
+          authToken = headers['authorization'];
+        }
       }
     });
 
-    console.log(`Navigating to https://api.hamsterkombatgame.io/clicker/#${tempHash}`);
-    await page.goto(`https://api.hamsterkombatgame.io/clicker/#${tempHash}`, { waitUntil: 'networkidle2', timeout: 60000 });
+    const url = `https://hamsterkombatgame.io/clicker/#${hash}`;
+    console.log(`Navigating to ${url}`);
+
+    await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
 
     console.log('Waiting for specific request...');
     await page.waitForRequest(request => request.url() === 'https://api.hamsterkombatgame.io/clicker/sync', { timeout: 60000 });
