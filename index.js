@@ -3,7 +3,6 @@ const puppeteer = require('puppeteer');
 const path = require('path');
 const fs = require('fs');
 
-const { getQuery } = require("./getQuery.js");
 const { getTokenFixed } = require("./getTokenFixed.js");
 const { getScreen } = require("./getScreen.js");
 const app = express();
