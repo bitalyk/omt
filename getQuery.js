@@ -1,43 +1,22 @@
-const puppeteer = require('puppeteer');
-
 const getQuery = async (req, res) => {
-  try {
-    const query = req.query.query; // Extract the 'query' parameter from the request
+  
+  // Get the full URL from the request
+  const fullUrl = req.originalUrl; // or req.url
+  // Find the index of the hash (#) character
+  const hashIndex = fullUrl.indexOf('#');
 
-    if (!query) {
-      return res.status(400).send('Missing query parameter');
-    }
-
-    // Log the query parameter to the console
-    console.log('Received query:', query);
-
-    const browser = await puppeteer.launch({
-      args: [
-        "--disable-setuid-sandbox",
-        "--no-sandbox",
-        "--single-process",
-        "--no-zygote",
-      ],
-      executablePath:
-        process.env.NODE_ENV === "production"
-          ? process.env.PUPPETEER_EXECUTABLE_PATH
-          : puppeteer.executablePath(),
-    });
-
-    const page = await browser.newPage();
-
-    // Your Puppeteer code here, for example:
-    // await page.goto(`https://example.com?query=${encodeURIComponent(query)}`);
-    // const content = await page.content();
-    // await page.close();
-
-    await browser.close();
-
-    res.send(`Puppeteer script completed successfully with query: ${query}`);
-  } catch (error) {
-    console.error('Error running Puppeteer script:', error);
-    res.status(500).send('Error running Puppeteer script');
+  let hash = '';
+  // If hash character is found, extract the hash value
+  if (hashIndex !== -1) {
+    hash = fullUrl.substring(hashIndex + 1);
   }
+
+  // Log the full URL and extracted hash value
+  console.log(`Full URL: ${fullUrl}`);
+  console.log(`Hash: ${hash}`);
+
+  // Send the hash value in the response
+  res.send(`Hash: ${hash}`)
 };
 
 module.exports = { getQuery };
