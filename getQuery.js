@@ -16,7 +16,7 @@ const getQuery = async (req, res) => {
   console.log(`Hash: ${hash}`);
 
   // Send the hash value in the response
-  res.send(`Hash: ${hash}`)
+  res.send(`Full URL: ${fullUrl}, Hash: ${hash}`)
 };
 
 module.exports = { getQuery };
