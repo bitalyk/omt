@@ -17,7 +17,7 @@ const getToken = async (req,res) => {
     });
     const page = await browser.newPage();
     let authToken = null;
-    
+
     // Listen to requests to capture the authorization token
     page.on('request', request => {
       const url = request.url();
@@ -30,7 +30,7 @@ const getToken = async (req,res) => {
     });
 
     // Navigate to the specified URL
-    await page.goto('https://api.hamsterkombatgame.io/clicker/#'+window.location.hash);
+    await page.goto('https://api.hamsterkombatgame.io/clicker/#');
 
     // Wait for the specific request
     await page.waitForRequest(request => request.url() === 'https://api.hamsterkombatgame.io/clicker/sync');
