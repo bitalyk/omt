@@ -16,17 +16,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Store hash temporarily in memory (or use a more robust method if needed)
 let tempHash = '';
 
-// Handle POST requests to /get-quary
-const getQuary = (req, res) => {
-  // Extract the hash from the request body
-  tempHash = req.body.hash || '';
-
-  // Log the hash value
-  console.log(`Hash: ${tempHash}`);
-
-  // Send the hash value in the response
-  res.send(`Hash: ${tempHash}`);
-};
 
 // Integrated getToken function with hash parameter
 const getToken = async (req, res) => {
@@ -88,6 +77,8 @@ const getQuery = (req, res) => {
 
   // Log the hash value
   console.log(`Hash: ${hash}`);
+
+  let tempHash = hash;
 
   // Send the hash value in the response
   res.send(`Hash: ${hash}`);

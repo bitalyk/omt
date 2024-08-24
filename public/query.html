@@ -5,10 +5,14 @@
 </head>
 <body>
   <button id="sendHash">Send Hash</button>
+  <button id="getToken">Get Token</button>
+
+  <div id="tokenDisplay"></div>
+
   <script>
     document.getElementById('sendHash').addEventListener('click', function() {
       const hash = window.location.hash;
-      fetch('/get-quary', {
+      fetch('/get-query', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -18,6 +22,16 @@
       .then(response => response.text())
       .then(data => console.log(data))
       .catch(error => console.error('Error:', error));
+    });
+    
+    document.getElementById('getToken').addEventListener('click', function() {
+      fetch('/get-token')
+        .then(response => response.json())
+        .then(data => {
+          const tokenDisplay = document.getElementById('tokenDisplay');
+          tokenDisplay.innerText = `Token: ${data.token}`;
+        })
+        .catch(error => console.error('Error:', error));
     });
   </script>
 </body>
