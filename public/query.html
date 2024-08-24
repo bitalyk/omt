@@ -10,22 +10,36 @@
   <div id="tokenDisplay"></div>
 
   <script>
-    document.getElementById('getToken').addEventListener('click', function() {
-      fetch('/get-token')
-        .then(response => {
-          if (!response.ok) {
-            return response.json().then(err => {
-              throw new Error(err.error || 'Unknown error');
-            });
-          }
-          return response.json();
-        })
-        .then(data => {
-          const tokenDisplay = document.getElementById('tokenDisplay');
-          tokenDisplay.innerText = `Token: ${data.token}`;
-        })
-        .catch(error => console.error('Error:', error.message));
+    document.getElementById('sendHash').addEventListener('click', function() {
+      const hash = window.location.hash.slice(1); // Remove the '#' from the hash
+      fetch('/get-query', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ hash: hash })
+      })
+      .then(response => response.text())
+      .then(data => console.log(data))
+      .catch(error => console.error('Error:', error));
     });
+    
+    document.getElementById('getToken').addEventListener('click', function() {
+    fetch('/get-token')
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(err => {
+            throw new Error(err.error || 'Unknown error');
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        const tokenDisplay = document.getElementById('tokenDisplay');
+        tokenDisplay.innerText = `Token: ${data.token}`;
+      })
+      .catch(error => console.error('Error:', error.message));
+  });
   </script>
 </body>
 </html>
