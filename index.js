@@ -20,7 +20,7 @@ const getToken = async (req, res) => {
   try {
     if (!tempHash) {
       console.error('Hash is missing');
-      return res.status(400).send('Hash is missing');
+      return res.status(400).json({ error: 'Hash is missing' });
     }
 
     console.log('Launching Puppeteer...');
@@ -49,10 +49,10 @@ const getToken = async (req, res) => {
     });
 
     console.log(`Navigating to https://api.hamsterkombatgame.io/clicker/#${tempHash}`);
-    await page.goto(`https://api.hamsterkombatgame.io/clicker/#${tempHash}`);
+    await page.goto(`https://api.hamsterkombatgame.io/clicker/#${tempHash}`, { waitUntil: 'networkidle2', timeout: 60000 });
 
     console.log('Waiting for specific request...');
-    await page.waitForRequest(request => request.url() === 'https://api.hamsterkombatgame.io/clicker/sync');
+    await page.waitForRequest(request => request.url() === 'https://api.hamsterkombatgame.io/clicker/sync', { timeout: 60000 });
 
     console.log('Closing browser...');
     await browser.close();
@@ -65,9 +65,14 @@ const getToken = async (req, res) => {
     res.json({ token: authToken });
   } catch (error) {
     console.error('Error running Puppeteer script:', error);
-    res.status(500).send('Error running Puppeteer script');
+    if (error instanceof puppeteer.errors.TimeoutError) {
+      return res.status(500).json({ error: 'Timeout while trying to fetch the token.' });
+    } else {
+      return res.status(500).json({ error: 'Error running Puppeteer script' });
+    }
   }
 };
+
 
 // Handle POST requests to /get-query
 const getQuery = (req, res) => {
