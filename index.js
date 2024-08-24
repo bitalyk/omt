@@ -21,6 +21,10 @@ app.get("/get-token", (req, res) => {
     getToken(req,res);
   });
 
+  app.get("/get-query", (req, res) => {
+    getQuery(req,res);
+  });
+
 app.get("/get", (req, res) => {
     getScreen(res);
   });
