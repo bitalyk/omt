@@ -46,7 +46,7 @@ const getToken = async (req, res) => {
       }
     });
 
-    const url = `https://hamsterkombatgame.io/clicker/#${hash}`;
+    const url = `https://hamsterkombatgame.io/clicker/${hash}`;
     console.log(`Navigating to ${url}`);
 
     await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
