@@ -21,7 +21,7 @@ app.get("/get-token", (req, res) => {
     getToken(req,res);
   });
 
-  app.get("/get-query", (req, res) => {
+  app.post("/get-query", (req, res) => {
     getQuery(req,res);
   });
 
