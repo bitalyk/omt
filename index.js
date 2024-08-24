@@ -86,6 +86,7 @@ const getQuery = (req, res) => {
 
 // Define routes
 app.post('/get-query', getQuery);
+app.post('/get-Token', getToken);
 
 app.get('/', (req, res) => {
   res.send('Render Puppeteer server is up and running!');
