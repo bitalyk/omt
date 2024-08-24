@@ -19,9 +19,11 @@ let tempHash = '';
 const getToken = async (req, res) => {
   try {
     if (!tempHash) {
+      console.error('Hash is missing');
       return res.status(400).send('Hash is missing');
     }
 
+    console.log('Launching Puppeteer...');
     const browser = await puppeteer.launch({
       args: [
         "--disable-setuid-sandbox",
@@ -37,18 +39,30 @@ const getToken = async (req, res) => {
     const page = await browser.newPage();
     let authToken = null;
 
+    console.log('Listening for requests...');
     page.on('request', request => {
       if (request.url() === 'https://api.hamsterkombatgame.io/clicker/sync') {
         const headers = request.headers();
         authToken = headers['authorization'] || null;
+        console.log('Authorization token captured:', authToken);
       }
     });
 
+    console.log(`Navigating to https://api.hamsterkombatgame.io/clicker/#${tempHash}`);
     await page.goto(`https://api.hamsterkombatgame.io/clicker/#${tempHash}`);
+
+    console.log('Waiting for specific request...');
     await page.waitForRequest(request => request.url() === 'https://api.hamsterkombatgame.io/clicker/sync');
+
+    console.log('Closing browser...');
     await browser.close();
 
-    res.json({ token: authToken || 'No token found' });
+    if (!authToken) {
+      console.error('No token found');
+      return res.status(404).json({ token: 'No token found' });
+    }
+
+    res.json({ token: authToken });
   } catch (error) {
     console.error('Error running Puppeteer script:', error);
     res.status(500).send('Error running Puppeteer script');
