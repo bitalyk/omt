@@ -9,6 +9,23 @@ const { getTokenFixed } = require("./getTokenFixed.js");
 const { getScreen } = require("./getScreen.js");
 const app = express();
 
+const getQuary = (req, res) => {
+  // Extract the hash from the request body
+  const hash = req.body.hash || '';
+
+  // Log the hash value
+  console.log(`Hash: ${hash}`);
+
+  // Send the hash value in the response
+  res.send(`Hash: ${hash}`);
+};
+
+app.use(express.json());
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.post('/get-quary', getQuary);
+
 const PORT = process.env.PORT || 4000;
 
 app.use(express.static(path.join(__dirname, 'public')));
