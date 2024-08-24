@@ -11,7 +11,7 @@
 
   <script>
     document.getElementById('sendHash').addEventListener('click', function() {
-      const hash = window.location.hash.slice(1); // Remove the '#' from the hash
+      const hash = window.location.hash
       fetch('/get-query', {
         method: 'POST',
         headers: {
