@@ -1,35 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fragment Example</title>
-    <script>
-
-        async function extractFragment() {
-    const fragment = window.location.hash.substring(1); // Remove the '#'
-    console.log('Fragment:', fragment);
-
-    document.getElementById('response').innerText = fragment ? `Fragment: ${fragment}` : 'No fragment found.';
-    
-    return fragment; // Add this line to return the fragment
-};
-
-window.onload = async () => {
-    const fragment = await extractFragment();
-    // You can use the fragment here if needed
-    extractFragment('yourFragmentHere')
-  .then(result => console.log(result))
-  .catch(error => console.error(error));
-    
-};
-    
-    </script>
-
+  <title>Hash Sender</title>
 </head>
 <body>
-    <h1>Fragment Example</h1>
-    <!-- Element to display the fragment -->
-    <div id="response">Waiting for server response...</div>
+  <button id="sendHash">Send Hash</button>
+  <script>
+    document.getElementById('sendHash').addEventListener('click', function() {
+      const hash = window.location.hash;
+      fetch('/get-query', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ hash: hash })
+      })
+      .then(response => response.text())
+      .then(data => console.log(data))
+      .catch(error => console.error('Error:', error));
+    });
+  </script>
 </body>
 </html>
